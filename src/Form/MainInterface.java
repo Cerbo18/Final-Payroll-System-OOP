@@ -386,6 +386,14 @@ public class MainInterface extends javax.swing.JFrame {
         try {
             String Name = NameTextField.getText();
             String ID = IDTextField.getText();
+            
+            for (int i = 0; i < Employee.employee.size(); i++) {
+                if(ID.equals(Employee.employee.get(i).getID())){
+                    JOptionPane.showMessageDialog(this, "ID already exists");
+                    return;
+                }
+            }
+            
             String Position = PositionTextField.getText();
             String Contact = ContactTextField.getText();
             double DaysWorked = Double.parseDouble(DaysWorkedTextField.getText());
