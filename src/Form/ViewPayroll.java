@@ -23,6 +23,12 @@ public class ViewPayroll extends javax.swing.JFrame {
     public ViewPayroll() {
         initComponents();
 
+        SearchTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            SearchTextField.setText("");
+        }
+        });
         double totalAmount = 0;
         for (int i = 0; i < Employee.employee.size(); i++) {
             totalAmount += Employee.employee.get(i).computeTotalAmount();
@@ -72,6 +78,9 @@ public class ViewPayroll extends javax.swing.JFrame {
         BackButton = new javax.swing.JButton();
         PrintButton = new javax.swing.JButton();
         TotalPayrollAmountLabel = new javax.swing.JLabel();
+        SearchTextField = new javax.swing.JTextField();
+        SearchButton = new javax.swing.JButton();
+        RefreshButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -79,7 +88,6 @@ public class ViewPayroll extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PAYROLL MANAGER v1.02");
-        setMaximumSize(new java.awt.Dimension(1175, 511));
         setMinimumSize(new java.awt.Dimension(1175, 511));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -98,10 +106,31 @@ public class ViewPayroll extends javax.swing.JFrame {
             new String [] {
                 "Name", "ID", "Position", "Contact", "Days (regular)", "Rate", "Regular Pay", "Hours (overtime)", "Rate", "Overtime Pay", "Total Pay"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         Table1.setGridColor(new java.awt.Color(204, 204, 204));
         Table1.setShowGrid(true);
         jScrollPane1.setViewportView(Table1);
+        if (Table1.getColumnModel().getColumnCount() > 0) {
+            Table1.getColumnModel().getColumn(0).setResizable(false);
+            Table1.getColumnModel().getColumn(1).setResizable(false);
+            Table1.getColumnModel().getColumn(2).setResizable(false);
+            Table1.getColumnModel().getColumn(3).setResizable(false);
+            Table1.getColumnModel().getColumn(4).setResizable(false);
+            Table1.getColumnModel().getColumn(5).setResizable(false);
+            Table1.getColumnModel().getColumn(6).setResizable(false);
+            Table1.getColumnModel().getColumn(7).setResizable(false);
+            Table1.getColumnModel().getColumn(8).setResizable(false);
+            Table1.getColumnModel().getColumn(9).setResizable(false);
+            Table1.getColumnModel().getColumn(10).setResizable(false);
+        }
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 204));
         jPanel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -130,6 +159,27 @@ public class ViewPayroll extends javax.swing.JFrame {
         TotalPayrollAmountLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         TotalPayrollAmountLabel.setText("Total");
 
+        SearchTextField.setText("Search Name");
+        SearchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchTextFieldActionPerformed(evt);
+            }
+        });
+
+        SearchButton.setText("Search");
+        SearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchButtonActionPerformed(evt);
+            }
+        });
+
+        RefreshButton.setText("Refresh");
+        RefreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -139,6 +189,12 @@ public class ViewPayroll extends javax.swing.JFrame {
                 .addComponent(PrintButton)
                 .addGap(18, 18, 18)
                 .addComponent(BackButton)
+                .addGap(73, 73, 73)
+                .addComponent(SearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(SearchButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(RefreshButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -153,7 +209,10 @@ public class ViewPayroll extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(BackButton)
                     .addComponent(PrintButton)
-                    .addComponent(TotalPayrollAmountLabel))
+                    .addComponent(TotalPayrollAmountLabel)
+                    .addComponent(SearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SearchButton)
+                    .addComponent(RefreshButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -192,7 +251,7 @@ public class ViewPayroll extends javax.swing.JFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 23, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
@@ -212,7 +271,7 @@ public class ViewPayroll extends javax.swing.JFrame {
             .addGroup(PrintPanelLayout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -237,11 +296,11 @@ public class ViewPayroll extends javax.swing.JFrame {
 
     private void PrintButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrintButtonActionPerformed
         int width = PrintPanel.getWidth();
-    int height = PrintPanel.getHeight();
+        int height = PrintPanel.getHeight();
     
-    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = image.createGraphics();
-    PrintPanel.paint(g2d);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+        PrintPanel.paint(g2d);
 
     try {
         BufferedImage watermark = ImageIO.read(new File("C:/Users/PC/Desktop/Payroll_Image/payroll_table.png"));
@@ -259,13 +318,82 @@ public class ViewPayroll extends javax.swing.JFrame {
         g2d.dispose();
 
         ImageIO.write(image, "png", new File("C:/Users/PC/Desktop/Payroll_Image/payroll_table.png"));
-        JOptionPane.showMessageDialog(this, "Image saved with watermark!");
+        JOptionPane.showMessageDialog(this, "Image Saved");
 
     } catch (IOException ex) {
         Logger.getLogger(ViewPayroll.class.getName()).log(Level.SEVERE, null, ex);
         JOptionPane.showMessageDialog(this, "Failed to save image: " + ex.getMessage());
     }
     }//GEN-LAST:event_PrintButtonActionPerformed
+
+    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
+        String keyword = SearchTextField.getText().trim().toLowerCase();
+        DefaultTableModel model = (DefaultTableModel) Table1.getModel();
+        model.setRowCount(0); // Clear table
+
+        for (Employee emp : Employee.employee) {
+            if (emp.getName().toLowerCase().contains(keyword)) {
+                model.addRow(new Object[]{
+                    emp.getName(),
+                    emp.getID(),
+                    emp.getPosition(),
+                    emp.getContact(),
+                    emp.getDaysWorked(),
+                    String.format("%,.2f", emp.getRatePerDay()),
+                    String.format("%,.2f", emp.computeRegularPay()),
+                    emp.getHoursWorked(),
+                    String.format("%,.2f", emp.getRatePerHour()),
+                    String.format("%,.2f", emp.computeOvertimePay()),
+                    String.format("%,.2f", emp.computeTotalAmount())
+                });
+            } 
+        }
+        if(model.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "No Matches");
+            for (Employee emp : Employee.employee) {
+                model.addRow(new Object[]{
+                    emp.getName(),
+                    emp.getID(),
+                    emp.getPosition(),
+                    emp.getContact(),
+                    emp.getDaysWorked(),
+                    String.format("%,.2f", emp.getRatePerDay()),
+                    String.format("%,.2f", emp.computeRegularPay()),
+                    emp.getHoursWorked(),
+                    String.format("%,.2f", emp.getRatePerHour()),
+                    String.format("%,.2f", emp.computeOvertimePay()),
+                    String.format("%,.2f", emp.computeTotalAmount())
+                });
+            }
+            return;
+        }      
+    }//GEN-LAST:event_SearchButtonActionPerformed
+
+    private void RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshButtonActionPerformed
+        DefaultTableModel model = (DefaultTableModel) Table1.getModel();
+        model.setRowCount(0); // Clear table
+
+        for (Employee emp : Employee.employee) {
+            model.addRow(new Object[]{
+                emp.getName(),
+                emp.getID(),
+                emp.getPosition(),
+                emp.getContact(),
+                emp.getDaysWorked(),
+                String.format("%,.2f", emp.getRatePerDay()),
+                String.format("%,.2f", emp.computeRegularPay()),
+                emp.getHoursWorked(),
+                String.format("%,.2f", emp.getRatePerHour()),
+                String.format("%,.2f", emp.computeOvertimePay()),
+                String.format("%,.2f", emp.computeTotalAmount())
+            });
+        }
+        SearchTextField.setText("Search Name");
+    }//GEN-LAST:event_RefreshButtonActionPerformed
+
+    private void SearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchTextFieldActionPerformed
+        SearchTextField.setText("");
+    }//GEN-LAST:event_SearchTextFieldActionPerformed
 
 
 //    public static void main(String args[]) {
@@ -305,6 +433,9 @@ public class ViewPayroll extends javax.swing.JFrame {
     private javax.swing.JButton BackButton;
     private javax.swing.JButton PrintButton;
     private javax.swing.JPanel PrintPanel;
+    private javax.swing.JButton RefreshButton;
+    private javax.swing.JButton SearchButton;
+    private javax.swing.JTextField SearchTextField;
     public javax.swing.JTable Table1;
     private javax.swing.JLabel TotalPayrollAmountLabel;
     private javax.swing.JLabel jLabel1;

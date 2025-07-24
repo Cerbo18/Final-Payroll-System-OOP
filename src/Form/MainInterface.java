@@ -451,55 +451,61 @@ public class MainInterface extends javax.swing.JFrame {
 
     //To remove a Worker
     private void RemoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveButtonActionPerformed
-        try {
-            int row  = FrontTable.getSelectedRow();
-            if(row<0){
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to Delete this Worker?");
+        if(confirm == JOptionPane.YES_OPTION){
+            try {
+                int row  = FrontTable.getSelectedRow();
+                if(row<0){
+                    JOptionPane.showMessageDialog(this, "Please select a row to remove");
+                    return;
+                }
+            Employee.employee.remove(row);
+            DefaultTableModel model = (DefaultTableModel)FrontTable.getModel();
+            model.removeRow(row);
+            } 
+            catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Please select a row to remove");
-                return;
             }
-        Employee.employee.remove(row);
-        DefaultTableModel model = (DefaultTableModel)FrontTable.getModel();
-        model.removeRow(row);
-        } 
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Please select a row to remove");
-        }
+        }    
     }//GEN-LAST:event_RemoveButtonActionPerformed
 
     private void UpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateButtonActionPerformed
-        try {
-            int row = FrontTable.getSelectedRow();
-            if(row<0){
-                JOptionPane.showMessageDialog(this, "Please select a row to update");
-                return;
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to edit this row?");
+        if(confirm == JOptionPane.YES_OPTION){
+            try {
+                int row = FrontTable.getSelectedRow();
+                if(row<0){
+                    JOptionPane.showMessageDialog(this, "Please select a row to update");
+                    return;
+                }
+                String Name = NameTextField.getText();
+                String ID = IDTextField.getText();
+                String Position = PositionTextField.getText();
+                String Contact = ContactTextField.getText();
+                double DaysWorked = Double.parseDouble(DaysWorkedTextField.getText());
+                double RatePerDay = Double.parseDouble(RatePerDayTextField.getText());
+                double HoursWorked = 0;
+                double RatePerHour = 0;
+                if(OvertimeToggleButton.isSelected()){
+                    HoursWorked = Double.parseDouble(HoursWorkedTextField.getText());
+                    RatePerHour = Double.parseDouble(RatePerHourTextField.getText());
+                }
+                Employee updated = new Employee(Name, ID, Position, Contact, DaysWorked, RatePerDay, HoursWorked, RatePerHour);
+                Employee.employee.set(row, updated);
+
+                DefaultTableModel model = (DefaultTableModel) FrontTable.getModel();
+                model.setValueAt(Name, row, 0);
+                model.setValueAt(ID, row, 1);
+                model.setValueAt(Position, row, 2);
+                model.setValueAt(Contact, row, 3);
+
+                clearSelections();
+
+            } 
+            catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Please Fill all Fields with proper values");
             }
-            String Name = NameTextField.getText();
-            String ID = IDTextField.getText();
-            String Position = PositionTextField.getText();
-            String Contact = ContactTextField.getText();
-            double DaysWorked = Double.parseDouble(DaysWorkedTextField.getText());
-            double RatePerDay = Double.parseDouble(RatePerDayTextField.getText());
-            double HoursWorked = 0;
-            double RatePerHour = 0;
-            if(OvertimeToggleButton.isSelected()){
-                HoursWorked = Double.parseDouble(HoursWorkedTextField.getText());
-                RatePerHour = Double.parseDouble(RatePerHourTextField.getText());
-            }
-            Employee updated = new Employee(Name, ID, Position, Contact, DaysWorked, RatePerDay, HoursWorked, RatePerHour);
-            Employee.employee.set(row, updated);
-            
-            DefaultTableModel model = (DefaultTableModel) FrontTable.getModel();
-            model.setValueAt(Name, row, 0);
-            model.setValueAt(ID, row, 1);
-            model.setValueAt(Position, row, 2);
-            model.setValueAt(Contact, row, 3);
-            
-            clearSelections();
-            
-        } 
-        catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please Fill all Fields with proper values");
-        }
+        }    
     }//GEN-LAST:event_UpdateButtonActionPerformed
 
     private void NameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameTextFieldActionPerformed
