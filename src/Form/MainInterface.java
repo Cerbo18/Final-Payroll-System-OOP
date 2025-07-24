@@ -1,6 +1,11 @@
 
 package Form;
 
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -412,10 +417,28 @@ public class MainInterface extends javax.swing.JFrame {
             RatePerHourTextField.setEditable(false);
             HoursWorkedTextField.setBackground(Color.lightGray);
             RatePerHourTextField.setBackground(Color.lightGray);
+            try (Connection conn = DatabaseConnection.getConnection()){
+                String sql = "INSERT INTO employees (Name, ID, Position, Contact, Days_Worked, Rate_Per_Day, Hours_Worked, Rate_Per_Hour) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setString(1, ID);
+                stmt.setString(2, Name);
+                stmt.setString(3, Position);
+                stmt.setString(4, Contact);
+                stmt.setDouble(5, DaysWorked);
+                stmt.setDouble(6, RatePerDay);
+                stmt.setDouble(7, HoursWorked);
+                stmt.setDouble(8, RatePerHour);
+                stmt.executeUpdate();
+            } 
+            catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to save to database.");
+            }
         } 
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please Fill all Fields with proper values");
         }
+        
     }//GEN-LAST:event_AddButtonActionPerformed
 
     //How to delete??

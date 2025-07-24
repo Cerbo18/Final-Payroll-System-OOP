@@ -1,6 +1,7 @@
 
 package Form;
 
+
 import java.util.ArrayList;
 
 public class Menu extends javax.swing.JFrame {
@@ -131,10 +132,12 @@ public class Menu extends javax.swing.JFrame {
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
         try {
+            DatabaseConnection.saveAllEmployeesToDatabase(Employee.employee);
             FileHandler.saveToFile(Employee.employee, "Workers.dat");
             System.out.println("Saved Successfully to Workers.dat");
         } 
         catch (Exception e) {
+            System.out.println("Error loading from mysql");
             System.out.println("Error Saving from Workers.dat");
         }
         System.exit(0);
@@ -142,19 +145,29 @@ public class Menu extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
        try {
+            DatabaseConnection.saveAllEmployeesToDatabase(Employee.employee);
             FileHandler.saveToFile(Employee.employee, "Workers.dat");
             System.out.println("Saved Successfully to Workers.dat");
         } 
         catch (Exception e) {
+            System.out.println("Error saving to mysql");
             System.out.println("Error Saving from Workers.dat");
         }
+       
     }//GEN-LAST:event_formWindowClosing
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       ArrayList<Employee> loadedEmployee = FileHandler.loadFromFile("Workers.dat");
+       
+        ArrayList<Employee> loadedFromDB = DatabaseConnection.loadAllEmployeesFromDatabase();
+        if (loadedFromDB != null && !loadedFromDB.isEmpty()) {
+            Employee.employee = loadedFromDB;
+        }
+              
+        ArrayList<Employee> loadedEmployee = FileHandler.loadFromFile("Workers.dat");
             if(loadedEmployee!=null){
-                Employee.employee = loadedEmployee;
+               Employee.employee = loadedEmployee;
             }
+            
     }//GEN-LAST:event_formWindowOpened
 
     public static void main(String args[]) {
