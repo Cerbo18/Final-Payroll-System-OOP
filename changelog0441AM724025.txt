@@ -1,0 +1,21 @@
+changelog
+Menu.java
+-updated buttons
+-added group/company logo
+-updated colors
+-added jframe title
+
+Maininterface.java
+-updated header
+-updated color
+-added jframe title
+
+ViewPayroll.java
+-relocated buttons and total amount
+-added gridlines
+-added watermark company logo at rendering print png image
+-added jframe title
+-added two decimal places
+-added comma separators
+-added currency prefix in label
+-added right-alignment for numeric columns
