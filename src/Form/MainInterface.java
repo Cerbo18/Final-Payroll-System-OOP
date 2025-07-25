@@ -467,7 +467,7 @@ public class MainInterface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowOpened
 
-    //To Save the data from the local file ("Workers.dat")
+    
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
       
     }//GEN-LAST:event_formWindowClosing

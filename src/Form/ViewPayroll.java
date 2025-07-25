@@ -303,7 +303,7 @@ public class ViewPayroll extends javax.swing.JFrame {
         PrintPanel.paint(g2d);
 
     try {
-        BufferedImage watermark = ImageIO.read(new File("C:/Users/PC/Desktop/Payroll_Image/payroll_table.png"));
+        BufferedImage watermark = ImageIO.read(new File("C:/Users/PC/Desktop/Payroll_Image/OOPWATERMARK.png"));
 
         int wmWidth = width / 3;
         int wmHeight = (watermark.getHeight() * wmWidth) / watermark.getWidth();
