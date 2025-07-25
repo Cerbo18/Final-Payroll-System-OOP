@@ -5,7 +5,7 @@ package Form;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-//Employee object template
+//Employee object template, Serializable to able to use Filehandler
 public class Employee implements Serializable {
     
     //The database for the current empoyees

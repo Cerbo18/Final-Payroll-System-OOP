@@ -11,7 +11,7 @@ public class DatabaseConnection {
     public static Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/payroll_system"; // your DB name
         String user = "root"; // or your MySQL user
-        String password = "root"; // default XAMPP password is "" or "root"
+        String password = "root"; 
         return DriverManager.getConnection(url, user, password);
     }
 

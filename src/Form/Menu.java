@@ -161,9 +161,9 @@ public class Menu extends javax.swing.JFrame {
         }
               
         ArrayList<Employee> loadedEmployee = FileHandler.loadFromFile("Workers.dat");
-            if(loadedEmployee!=null){
-               Employee.employee = loadedEmployee;
-            }
+        if(loadedEmployee!=null){
+           Employee.employee = loadedEmployee;
+        }
             
     }//GEN-LAST:event_formWindowOpened
 

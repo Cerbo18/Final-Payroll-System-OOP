@@ -4,7 +4,6 @@ package Form;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -482,9 +481,9 @@ public class MainInterface extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Please select a row to remove");
                     return;
                 }
-            Employee.employee.remove(row);
-            DefaultTableModel model = (DefaultTableModel)FrontTable.getModel();
-            model.removeRow(row);
+                Employee.employee.remove(row);
+                DefaultTableModel model = (DefaultTableModel)FrontTable.getModel();
+                model.removeRow(row);
             } 
             catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Please select a row to remove");
