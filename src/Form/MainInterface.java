@@ -182,8 +182,8 @@ public class MainInterface extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Lucida Bright", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Payroll Manager");
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel9.setText("Modify Employees");
 
         OvertimeToggleButton.setBackground(new java.awt.Color(204, 204, 204));
         OvertimeToggleButton.setForeground(new java.awt.Color(51, 51, 51));
@@ -286,7 +286,7 @@ public class MainInterface extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ContactTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(OvertimeToggleButton)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel9))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
