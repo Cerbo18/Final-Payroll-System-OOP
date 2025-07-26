@@ -88,7 +88,9 @@ public class DatabaseConnection {
     String user = "root";
     String password = "root";
 
-    String sql = "UPDATE employees SET Name = ?, Position = ?, Contact = ?, Days_Worked = ?, Rate_Per_Day = ?, Hours_Worked = ?, Rate_Per_Hour = ? WHERE ID = ?";
+    String sql = "UPDATE employees SET Name = ?, Position = ?, Contact = ?, Days_Worked = ?, " +
+             "Rate_Per_Day = ?, Hours_Worked = ?, Rate_Per_Hour = ?, RegularTotalAmount = ?, " +
+             "OvertimeTotalAmount = ?, TotalAmount = ? WHERE ID = ?";
 
     try (Connection conn = DriverManager.getConnection(url, user, password);
          PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -100,7 +102,10 @@ public class DatabaseConnection {
         stmt.setDouble(5, emp.getRatePerDay());
         stmt.setDouble(6, emp.getHoursWorked());
         stmt.setDouble(7, emp.getRatePerHour());
-        stmt.setString(8, emp.getID()); // WHERE clause
+        stmt.setDouble(8, emp.computeRegularPay());
+        stmt.setDouble(9, emp.computeOvertimePay());
+        stmt.setDouble(10, emp.computeTotalAmount());
+        stmt.setString(11, emp.getID()); // WHERE clause
 
         int rowsUpdated = stmt.executeUpdate();
         if (rowsUpdated > 0) {
