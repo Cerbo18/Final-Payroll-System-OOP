@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -54,7 +55,25 @@ public class MainInterface extends javax.swing.JFrame {
         
     }
     
-    
+    private void loadTableData(ArrayList<Employee> list) {
+    DefaultTableModel model = (DefaultTableModel) FrontTable.getModel();
+    model.setRowCount(0);
+    for (Employee emp : list) {
+        model.addRow(new Object[]{
+            emp.getName(),
+            emp.getID(),
+            emp.getPosition(),
+            emp.getContact(),
+            emp.getDaysWorked(),
+            String.format("%,.2f", emp.getRatePerDay()),
+            String.format("%,.2f", emp.computeRegularPay()),
+            emp.getHoursWorked(),
+            String.format("%,.2f", emp.getRatePerHour()),
+            String.format("%,.2f", emp.computeOvertimePay()),
+            String.format("%,.2f", emp.computeTotalAmount())
+        });
+    }
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -319,7 +338,7 @@ public class MainInterface extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RatePerDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(OvertimeToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,13 +392,12 @@ public class MainInterface extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -520,7 +538,7 @@ public class MainInterface extends javax.swing.JFrame {
                 model.setValueAt(ID, row, 1);
                 model.setValueAt(Position, row, 2);
                 model.setValueAt(Contact, row, 3);
-
+                DatabaseConnection.updateToSQL(updated);
                 clearSelections();
 
             } 
@@ -547,6 +565,9 @@ public class MainInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_BackButtonActionPerformed
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearButtonActionPerformed
+        FrontTable.clearSelection();
+        HoursWorkedTextField.setBackground(Color.lightGray);
+        RatePerHourTextField.setBackground(Color.lightGray);
         clearSelections();
     }//GEN-LAST:event_ClearButtonActionPerformed
 
@@ -562,6 +583,9 @@ public class MainInterface extends javax.swing.JFrame {
             HoursWorkedTextField.setText("");
             RatePerHourTextField.setText("");
             OvertimeToggleButton.setSelected(false);
+            boolean selected = OvertimeToggleButton.isSelected();
+            HoursWorkedTextField.setEditable(selected);
+            RatePerHourTextField.setEditable(selected);
     }
     
     

@@ -389,12 +389,18 @@ public class ViewPayroll extends javax.swing.JFrame {
             });
         }
         SearchTextField.setText("Search Name");
+        double totalAmount=0;
+        for (int i = 0; i < Employee.employee.size(); i++) {
+            totalAmount += Employee.employee.get(i).computeTotalAmount();
+        }
+        TotalPayrollAmountLabel.setText("Php " + String.format("%,.2f", totalAmount));
     }//GEN-LAST:event_RefreshButtonActionPerformed
 
     private void SearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchTextFieldActionPerformed
         SearchTextField.setText("");
     }//GEN-LAST:event_SearchTextFieldActionPerformed
 
+    
 
 //    public static void main(String args[]) {
 //
