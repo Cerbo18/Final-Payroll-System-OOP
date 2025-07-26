@@ -426,7 +426,12 @@ public class MainInterface extends javax.swing.JFrame {
                 HoursWorked = Double.parseDouble(HoursWorkedTextField.getText());
                 RatePerHour = Double.parseDouble(RatePerHourTextField.getText());
             }
-            Employee.employee.add(new Employee(Name, ID, Position, Contact, DaysWorked, RatePerDay, HoursWorked, RatePerHour));
+            Employee newEmp = new Employee(Name, ID, Position, Contact, DaysWorked, RatePerDay, HoursWorked, RatePerHour);
+            newEmp.setRegularTotalAmount(newEmp.computeRegularPay());
+            newEmp.setOvertimeTotalAmount(newEmp.computeOvertimePay());
+            newEmp.setTotalAmount(newEmp.computeTotalAmount());
+
+            Employee.employee.add(newEmp);
             DefaultTableModel model = (DefaultTableModel)FrontTable.getModel();
             model.addRow(new Object[]{Name, ID, Position, Contact});  
             clearSelections();
@@ -435,7 +440,7 @@ public class MainInterface extends javax.swing.JFrame {
             HoursWorkedTextField.setBackground(Color.lightGray);
             RatePerHourTextField.setBackground(Color.lightGray);
             try (Connection conn = DatabaseConnection.getConnection()){
-                String sql = "INSERT INTO employees (Name, ID, Position, Contact, Days_Worked, Rate_Per_Day, Hours_Worked, Rate_Per_Hour) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO employees (Name, ID, Position, Contact, Days_Worked, Rate_Per_Day, RegularTotalAmount, Hours_Worked, Rate_Per_Hour , OvertimeTotalAmount, TotalAmount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, ID);
                 stmt.setString(2, Name);
@@ -443,8 +448,11 @@ public class MainInterface extends javax.swing.JFrame {
                 stmt.setString(4, Contact);
                 stmt.setDouble(5, DaysWorked);
                 stmt.setDouble(6, RatePerDay);
-                stmt.setDouble(7, HoursWorked);
-                stmt.setDouble(8, RatePerHour);
+                stmt.setDouble(7, newEmp.computeRegularPay());
+                stmt.setDouble(8, HoursWorked);
+                stmt.setDouble(9, RatePerHour);
+                stmt.setDouble(10, newEmp.computeOvertimePay());
+                stmt.setDouble(11, newEmp.computeTotalAmount());
                 stmt.executeUpdate();
             } 
             catch (SQLException ex) {
