@@ -84,39 +84,39 @@ public class DatabaseConnection {
     }
     
     public static void updateToSQL(Employee emp) {
-    String url = "jdbc:mysql://localhost:3306/payroll_system";
-    String user = "root";
-    String password = "root";
+        String url = "jdbc:mysql://localhost:3306/payroll_system";
+        String user = "root";
+        String password = "root";
 
-    String sql = "UPDATE employees SET Name = ?, Position = ?, Contact = ?, Days_Worked = ?, " +
-             "Rate_Per_Day = ?, Hours_Worked = ?, Rate_Per_Hour = ?, RegularTotalAmount = ?, " +
-             "OvertimeTotalAmount = ?, TotalAmount = ? WHERE ID = ?";
+        String sql = "UPDATE employees SET Name = ?, Position = ?, Contact = ?, Days_Worked = ?, " +
+                 "Rate_Per_Day = ?, Hours_Worked = ?, Rate_Per_Hour = ?, RegularTotalAmount = ?, " +
+                 "OvertimeTotalAmount = ?, TotalAmount = ? WHERE ID = ?";
 
-    try (Connection conn = DriverManager.getConnection(url, user, password);
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        stmt.setString(1, emp.getName());
-        stmt.setString(2, emp.getPosition());
-        stmt.setString(3, emp.getContact());
-        stmt.setDouble(4, emp.getDaysWorked());
-        stmt.setDouble(5, emp.getRatePerDay());
-        stmt.setDouble(6, emp.getHoursWorked());
-        stmt.setDouble(7, emp.getRatePerHour());
-        stmt.setDouble(8, emp.computeRegularPay());
-        stmt.setDouble(9, emp.computeOvertimePay());
-        stmt.setDouble(10, emp.computeTotalAmount());
-        stmt.setString(11, emp.getID()); // WHERE clause
+            stmt.setString(1, emp.getName());
+            stmt.setString(2, emp.getPosition());
+            stmt.setString(3, emp.getContact());
+            stmt.setDouble(4, emp.getDaysWorked());
+            stmt.setDouble(5, emp.getRatePerDay());
+            stmt.setDouble(6, emp.getHoursWorked());
+            stmt.setDouble(7, emp.getRatePerHour());
+            stmt.setDouble(8, emp.computeRegularPay());
+            stmt.setDouble(9, emp.computeOvertimePay());
+            stmt.setDouble(10, emp.computeTotalAmount());
+            stmt.setString(11, emp.getID()); // WHERE clause
 
-        int rowsUpdated = stmt.executeUpdate();
-        if (rowsUpdated > 0) {
-            System.out.println("Employee updated successfully in MySQL.");
-        } else {
-            System.out.println("No record was updated. Check ID.");
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Employee updated successfully in MySQL.");
+            } else {
+                System.out.println("No record was updated. Check ID.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "SQL Update Error: " + e.getMessage());
         }
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "SQL Update Error: " + e.getMessage());
     }
-}
 }

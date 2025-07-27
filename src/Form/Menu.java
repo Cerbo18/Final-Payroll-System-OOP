@@ -156,13 +156,21 @@ public class Menu extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
        
         ArrayList<Employee> loadedFromDB = DatabaseConnection.loadAllEmployeesFromDatabase();
+
         if (loadedFromDB != null && !loadedFromDB.isEmpty()) {
+            // MySQL success
             Employee.employee = loadedFromDB;
-        }
-              
-        ArrayList<Employee> loadedEmployee = FileHandler.loadFromFile("Workers.dat");
-        if(loadedEmployee!=null){
-           Employee.employee = loadedEmployee;
+            System.out.println("Loaded employees from MySQL.");
+        } else {
+            // Fallback to file
+            ArrayList<Employee> loadedFromFile = FileHandler.loadFromFile("Workers.dat");
+            if (loadedFromFile != null) {
+                Employee.employee = loadedFromFile;
+                System.out.println("MySQL empty or failed. Loaded from Workers.dat.");
+            } else {
+                Employee.employee = new ArrayList<>();
+                System.out.println("No data found in MySQL or file.");
+            }
         }
             
     }//GEN-LAST:event_formWindowOpened
