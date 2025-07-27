@@ -302,28 +302,33 @@ public class ViewPayroll extends javax.swing.JFrame {
         Graphics2D g2d = image.createGraphics();
         PrintPanel.paint(g2d);
 
-    try {
-        BufferedImage watermark = ImageIO.read(new File("C:/Users/PC/Desktop/Payroll_Image/OOPWATERMARK.png"));
+        try {
+            BufferedImage watermark = ImageIO.read(new File("C:/Users/PC/Desktop/Payroll_Image/OOPWATERMARK.png"));
 
-        int wmWidth = width / 3;
-        int wmHeight = (watermark.getHeight() * wmWidth) / watermark.getWidth();
-        Image scaledWatermark = watermark.getScaledInstance(wmWidth, wmHeight, Image.SCALE_SMOOTH);
+            int wmWidth = width / 3;
+            int wmHeight = (watermark.getHeight() * wmWidth) / watermark.getWidth();
+            Image scaledWatermark = watermark.getScaledInstance(wmWidth, wmHeight, Image.SCALE_SMOOTH);
 
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.15f));
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.15f));
 
-        int x = (width - wmWidth) / 2;
-        int y = (height - wmHeight) / 2;
+            int x = (width - wmWidth) / 2;
+            int y = (height - wmHeight) / 2;
 
-        g2d.drawImage(scaledWatermark, x, y, null);
-        g2d.dispose();
+            g2d.drawImage(scaledWatermark, x, y, null);
+            int refNumber = getNextReferenceNumber();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
+            g2d.drawString("Reference No: " + refNumber, 30, 30); // top-left corner
+            g2d.dispose();
 
-        ImageIO.write(image, "png", new File("C:/Users/PC/Desktop/Payroll_Image/payroll_table.png"));
-        JOptionPane.showMessageDialog(this, "Image Saved");
+            ImageIO.write(image, "png", new File("C:/Users/PC/Desktop/Payroll_Image/payroll_table.png"));
+            JOptionPane.showMessageDialog(this, "Image Saved");
 
-    } catch (IOException ex) {
-        Logger.getLogger(ViewPayroll.class.getName()).log(Level.SEVERE, null, ex);
-        JOptionPane.showMessageDialog(this, "Failed to save image: " + ex.getMessage());
-    }
+        } 
+        catch (IOException ex) {
+            Logger.getLogger(ViewPayroll.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Failed to save image: " + ex.getMessage());
+        }
     }//GEN-LAST:event_PrintButtonActionPerformed
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
@@ -400,6 +405,28 @@ public class ViewPayroll extends javax.swing.JFrame {
         SearchTextField.setText("");
     }//GEN-LAST:event_SearchTextFieldActionPerformed
 
+    private int getNextReferenceNumber() {
+        File file = new File("C:/Users/PC/Desktop/Payroll_Image/Ref#.txt");
+        int ref = 1;
+
+        try {
+            if (file.exists()) {
+                java.util.Scanner sc = new java.util.Scanner(file);
+                if (sc.hasNextInt()) {
+                    ref = sc.nextInt() + 1;
+                }
+                sc.close();
+            }
+
+            java.io.FileWriter writer = new java.io.FileWriter(file, false);
+            writer.write(Integer.toString(ref));
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ViewPayroll.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return ref;
+    }
     
 
 //    public static void main(String args[]) {
