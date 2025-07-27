@@ -158,11 +158,11 @@ public class Menu extends javax.swing.JFrame {
         ArrayList<Employee> loadedFromDB = DatabaseConnection.loadAllEmployeesFromDatabase();
 
         if (loadedFromDB != null && !loadedFromDB.isEmpty()) {
-            // MySQL success
+            
             Employee.employee = loadedFromDB;
             System.out.println("Loaded employees from MySQL.");
         } else {
-            // Fallback to file
+            
             ArrayList<Employee> loadedFromFile = FileHandler.loadFromFile("Workers.dat");
             if (loadedFromFile != null) {
                 Employee.employee = loadedFromFile;

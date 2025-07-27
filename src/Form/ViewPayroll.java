@@ -334,7 +334,7 @@ public class ViewPayroll extends javax.swing.JFrame {
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
         String keyword = SearchTextField.getText().trim().toLowerCase();
         DefaultTableModel model = (DefaultTableModel) Table1.getModel();
-        model.setRowCount(0); // Clear table
+        model.setRowCount(0); 
 
         for (Employee emp : Employee.employee) {
             if (emp.getName().toLowerCase().contains(keyword)) {

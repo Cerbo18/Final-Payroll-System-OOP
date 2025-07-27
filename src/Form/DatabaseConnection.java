@@ -41,9 +41,9 @@ public class DatabaseConnection {
                 ps.executeUpdate();
             }
 
-            System.out.println("✅ All data saved to MySQL.");
+            System.out.println("All data saved to MySQL.");
         } catch (SQLException e) {
-            System.out.println("❌ Error saving to database: " + e.getMessage());
+            System.out.println("Error saving to database: " + e.getMessage());
         }
     }
 
@@ -75,9 +75,9 @@ public class DatabaseConnection {
                 employeeList.add(emp);
             }
 
-            System.out.println("✅ All data loaded from MySQL.");
+            System.out.println("All data loaded from MySQL.");
         } catch (SQLException e) {
-            System.out.println("❌ Error loading from database: " + e.getMessage());
+            System.out.println("Error loading from database: " + e.getMessage());
         }
 
         return employeeList;
